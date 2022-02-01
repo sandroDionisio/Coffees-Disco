@@ -1,34 +1,7 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
+import React from 'react';
+import { useRouter } from "next/router";
 import appConfig from '../config.json';
-
-function GlobalStyle() {
-    return (
-      <style global jsx>{`
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-          list-style: none;
-        }
-        body {
-          font-family: 'Open Sans', sans-serif;
-        }
-        /* App fit Height */ 
-        html, body, #__next {
-          min-height: 100vh;
-          display: flex;
-          flex: 1;
-        }
-        #__next {
-          flex: 1;
-        }
-        #__next > * {
-          flex: 1;
-        }
-        /* ./App fit Height */ 
-      `}</style>
-    );
-  }
 
 function Titulo(props) {
     const Tag = props.tag || 'h1';
@@ -63,11 +36,13 @@ function Titulo(props) {
 /*export default HomePage*/
 
 export default function PaginaInicial() {
-    const username = 'SandroDionisio';
-  
+    // const username = 'SandroDionisio';
+  const [username, setUsername] = React.useState('sandroDionisio');
+  const roteamento = useRouter(); 
+
     return (
       <>
-        <GlobalStyle />
+       
         <Box
           styleSheet={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -88,23 +63,57 @@ export default function PaginaInicial() {
               width: '100%', maxWidth: '700px',
               borderRadius: '100px 10px 100px 100px', padding: '30px', margin: '16px',
               boxShadow: '0 15px 10px 0 rgb(0 0 0 / 20%)',
+              opacity: '95%',
               backgroundColor: appConfig.theme.colors.neutrals[700],
             }}
           >
             {/* Formulário */}
             <Box
               as="form"
+              onSubmit={function (infosDoEvento) {
+                infosDoEvento.preventDefault();
+                console.log('alguem submeteu um form');
+                roteamento.push(`/chat?username=${username}`);
+               // window.location.href = "/chat"
+              }}
               styleSheet={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 width: { xs: '100%', sm: '60%' }, textAlign: 'center', marginBottom: '32px',
+                
               }}
             >
-              <Titulo tag="h2">Boas vindas de volta!</Titulo>
+              <Titulo tag="h1">Conversa com Café.<br/> Desfrute do ambiente!</Titulo>
+              
+              
               <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
                 {appConfig.name}
               </Text>
   
-              <TextField
+              {/*<input
+               type="text"
+               value={username}
+               onChange={function (event){
+                 console.log('Usuario digitou', event.target.value);
+                // Onde esta o valor?
+                 const valor = event.target.value;
+                // Trocar o valor da variavel
+                // atraves do React e avise quem precisa
+                 setUsername(valor);
+                 
+               }}
+               />*/}
+               
+               <TextField
+               value={username}
+               onChange={function (event){
+                 console.log('Usuario digitou', event.target.value);
+                // Onde esta o valor?
+                 const valor = event.target.value;
+                // Trocar o valor da variavel
+                // atraves do React e avise quem precisa
+                 setUsername(valor);
+                 
+               }}
                 fullWidth
                 textFieldColors={{
                   neutral: {
@@ -114,7 +123,7 @@ export default function PaginaInicial() {
                     backgroundColor: appConfig.theme.colors.neutrals[800],
                   },
                 }}
-              />
+              /> 
               <Button
                 type='submit'
                 label='Entrar'
@@ -126,6 +135,7 @@ export default function PaginaInicial() {
                   mainColorStrong: appConfig.theme.colors.primary[600],
                 }}
               />
+              
             </Box>
             {/* Formulário */}
   
@@ -144,6 +154,7 @@ export default function PaginaInicial() {
                 borderRadius: '60px 10px 60px 60px',
                 flex: 1,
                 minHeight: '200px',
+                opacity: '94%',
               }}
             >
               <Image
@@ -170,4 +181,4 @@ export default function PaginaInicial() {
         </Box>
       </>
     );
-  }
+}
